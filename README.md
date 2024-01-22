@@ -1,18 +1,10 @@
-## Getting Started
+# 脳が脳がアホになるナベアツの算数トレーニングゲーム
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## ゲーム概要
+-	ランダムな2桁+１桁の足し算.
+-	制限時間内（3秒以内）に回答.
+-	3の倍数か3のつく場合には「aho」と回答.
+-	正解時には残りの制限時間*99のポイントを加算（3の倍数にこだわりたい）.
+-	「アホ」だった場合には残りの制限時間*333のポイントを加算.
+-	誤答した場合はゲームオーバー.
+-	ゲームオーバー時にスコアを表示.
