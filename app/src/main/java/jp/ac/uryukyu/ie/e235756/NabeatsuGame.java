@@ -10,6 +10,11 @@ public class NabeatsuGame {
     private int timeLimitSeconds = 13;
     private boolean gameActive = true;
 
+    private ScoreManager scoreManager;
+    public NabeatsuGame() {
+        this.scoreManager = new ScoreManager();
+    }
+
     public static void main(String[] args) {
         NabeatsuGame game = new NabeatsuGame();
         game.startGame();
@@ -40,46 +45,63 @@ public class NabeatsuGame {
         int answer = num1 + num2;
     
         System.out.println("問題: " + num1 + " + " + num2);
-    
         System.out.print("回答を入力してください: ");
-        Scanner scanner = new Scanner(System.in);
-        String userAnswer = scanner.next();
     
-        if ((answer % 3 == 0 || String.valueOf(answer).contains("3"))) {
-            if (userAnswer.equalsIgnoreCase("aho")) {
-                System.out.println("正解！ 333ポイントを獲得しました。");
-                score += 333;
-            } else {
-                System.out.println("不正解。ゲームオーバー");
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < TimeUnit.SECONDS.toMillis(timeLimitSeconds)) {
+            if (System.currentTimeMillis() - startTime >= TimeUnit.SECONDS.toMillis(timeLimitSeconds)) {
+                // 制限時間を過ぎた場合
+                System.out.println("制限時間を超過しました。ゲームオーバー");
                 gameActive = false;
+                return;
             }
-        } else {
-            try {
-                int userIntAnswer = Integer.parseInt(userAnswer);
     
-                if (userIntAnswer == answer) {
-                    System.out.println("正解！ " + 99 + "ポイントを獲得しました。");
-                    score += 99;
-                } else if (userAnswer.equalsIgnoreCase("aho")) {
-                    System.out.println("ゲームオーバー");
-                    gameActive = false;
+            Scanner scanner = new Scanner(System.in);
+            if (scanner.hasNextLine()) {
+                String userAnswer = scanner.nextLine();
+    
+                if ((answer % 3 == 0 || String.valueOf(answer).contains("3"))) {
+                    if (userAnswer.equalsIgnoreCase("aho")) {
+                        System.out.println("正解！ 333ポイントを獲得しました。");
+                        score += 333;
+                        scoreManager.updateScore(score);
+                    } else {
+                        System.out.println("不正解。ゲームオーバー");
+                        gameActive = false;
+                    }
                 } else {
-                    System.out.println("不正解。ゲームオーバー");
-                    gameActive = false;
+                    try {
+                        int userIntAnswer = Integer.parseInt(userAnswer);
+    
+                        if (userIntAnswer == answer) {
+                            System.out.println("正解！ " + 99 + "ポイントを獲得しました。");
+                            score += 99;
+                            scoreManager.updateScore(score);
+                        } else {
+                            System.out.println("不正解。ゲームオーバー");
+                            gameActive = false;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("数値を入力してください。");
+                        System.out.println("ゲームオーバー");
+                        gameActive = false;
+                    }
                 }
-            } catch (NumberFormatException e) {
-                // 数値以外の入力はここで処理
-                System.out.println("不正解。ゲームオーバー");
-                gameActive = false;
+    
+                System.out.println("スコア: " + score);
+                System.out.println("-------------------------------");
+                return;
             }
         }
     
-        System.out.println("スコア: " + score);
-        System.out.println("-------------------------------");
+        // 制限時間を過ぎた場合
+        System.out.println("制限時間を超過しました。ゲームオーバー");
+        gameActive = false;
     }
 
     private void endGame() {
         System.out.println("ゲーム終了！ スコア: " + score);
+        System.out.println("ハイスコア: " + scoreManager.getHighScores());
         System.exit(0);
     }
 }
