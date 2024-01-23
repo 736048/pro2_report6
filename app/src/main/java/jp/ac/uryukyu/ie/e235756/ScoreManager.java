@@ -4,27 +4,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * スコアを管理し、ハイスコアを保存するクラス。
+ */
 public class ScoreManager {
     private List<Integer> highScores;
     private static final int MAX_HIGH_SCORES = 5;
     private boolean scoreUpdated; // スコアが更新されたかどうかのフラグ
 
+    /**
+     * {@code ScoreManager} クラスの新しいインスタンスを作成。
+     * ハイスコアはファイルから読み込まれる。
+     */
     public ScoreManager() {
         this.highScores = loadHighScoresFromFile();
         this.scoreUpdated = false;
     }
 
+    /**
+     * ハイスコアのリストを取得。
+     *
+     * @return ハイスコアのリスト
+     */
     public List<Integer> getHighScores() {
         return highScores;
     }
 
+    /**
+     * スコアを更新。一回のゲームでのスコア更新は一回だけに制限される。
+     *
+     * @param points 更新するスコア
+     */
     public void updateScore(int points) {
-        if (!scoreUpdated) { // 一回のゲームでスコア更新は一回だけに制限
+        if (!scoreUpdated) {
             this.highScores.add(points);
             Collections.sort(highScores, Collections.reverseOrder());
             trimToMaxHighScores();
             saveHighScoresToFile();
-            scoreUpdated = true; // フラグを更新
+            scoreUpdated = true;
         }
     }
 
